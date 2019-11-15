@@ -30,7 +30,7 @@ class CypressController extends Controller
         $request->validate(['modelClass' => 'required']);
 
         $modelClass = Cypress::resolveModelClass($request->input('modelClass'));
-        $quantity = $request->input('quantity', 1);
+        $quantity = $request->input('quantity');
         $attributes = $request->input('attributes', []);
 
         return factory($modelClass, $quantity)->create($attributes);
