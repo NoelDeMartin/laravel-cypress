@@ -5,6 +5,7 @@ namespace NoelDeMartin\LaravelCypress\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
+use NoelDeMartin\LaravelCypress\Facades\Cypress;
 
 class CypressController extends Controller
 {
@@ -22,8 +23,10 @@ class CypressController extends Controller
     {
         $request->validate(['modelClass' => 'required']);
 
-        $modelClass = $request->input('modelClass');
+        $modelClass = Cypress::resolveModelClass($request->input('modelClass'));
+        $quantity = $request->input('quantity', 1);
+        $attributes = $request->input('attributes', []);
 
-        return factory($modelClass)->create();
+        return factory($modelClass, $quantity)->create($attributes);
     }
 }

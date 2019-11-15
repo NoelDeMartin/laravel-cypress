@@ -5,6 +5,7 @@ namespace NoelDeMartin\LaravelCypress;
 use Exception;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use NoelDeMartin\LaravelCypress\Cypress;
 
 class CypressServiceProvider extends ServiceProvider
 {
@@ -35,5 +36,7 @@ class CypressServiceProvider extends ServiceProvider
         if ($this->app->environment('production')) {
             throw new Exception('It is unsafe to run Laravel Cypress in production.');
         }
+
+        $this->app->bind('cypress', Cypress::class);
     }
 }
