@@ -20,8 +20,10 @@ class CypressServiceProvider extends ServiceProvider
             ->middleware('web')
             ->group(function () {
                 Route::get('/_cypress/setup', 'CypressController@setup');
-                Route::get('/_cypress/current_user/{guard?}', 'CypressController@currentUser');
                 Route::get('/_cypress/csrf_token', 'CypressController@csrfToken');
+                Route::get('/_cypress/current_user/{guard?}', 'CypressController@currentUser');
+                Route::get('/_cypress/login/{userId}/{guard?}', 'CypressController@login');
+                Route::get('/_cypress/logout/{guard?}', 'CypressController@logout');
                 Route::post('/_cypress/create_models', 'CypressController@createModels');
             });
     }

@@ -20,6 +20,20 @@ class CypressController extends Controller
         return response()->json(csrf_token());
     }
 
+    public function login($userId, $guard = null)
+    {
+        $guard = $guard ?: config('auth.defaults.guard');
+        $provider = Auth::guard($guard)->getProvider();
+        $user = $provider->retrieveById($userId);
+
+        Auth::guard($guard)->login($user);
+    }
+
+    public function logout($guard = null)
+    {
+        Auth::guard($guard ?: config('auth.defaults.guard'))->logout();
+    }
+
     public function currentUser($guard = null)
     {
         return Auth::guard($guard)->user();
