@@ -12,7 +12,7 @@ class CypressController extends Controller
 {
     public function setup()
     {
-        Artisan::call('migrate:fresh');
+        //
     }
 
     public function csrfToken()
@@ -48,5 +48,12 @@ class CypressController extends Controller
         $attributes = $request->input('attributes', []);
 
         return factory($modelClass, $quantity)->create($attributes);
+    }
+
+    public function callArtisan(Request $request)
+    {
+        $request->validate(['command' => 'required']);
+
+        Artisan::call($request->input('command'), $request->input('parameters', []));
     }
 }

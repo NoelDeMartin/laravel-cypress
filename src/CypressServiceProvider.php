@@ -25,6 +25,7 @@ class CypressServiceProvider extends ServiceProvider
                 Route::get('/_cypress/login/{userId}/{guard?}', 'CypressController@login');
                 Route::get('/_cypress/logout/{guard?}', 'CypressController@logout');
                 Route::post('/_cypress/create_models', 'CypressController@createModels');
+                Route::post('/_cypress/call_artisan', 'CypressController@callArtisan');
             });
     }
 
