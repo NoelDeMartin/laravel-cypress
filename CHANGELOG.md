@@ -1,3 +1,7 @@
+## v0.2.0
+
+- Added helpers to [define custom commands](https://github.com/NoelDeMartin/cypress-laravel/tree/v0.2.0#define-your-own-commands).
+
 ## v0.1.0
 
 ### Breaking changes
