@@ -55,4 +55,11 @@ class CypressController
 
         Artisan::call($request->input('command'), $request->input('parameters', []));
     }
+
+    public function command(Request $request)
+    {
+        $request->validate(['command' => 'required']);
+
+        return Cypress::handleCommand($request->get('command'), $request->get('arguments', []));
+    }
 }
