@@ -46,7 +46,7 @@ class CypressController
         $quantity = $request->input('quantity');
         $attributes = $request->input('attributes', []);
 
-        return factory($modelClass, $quantity)->create($attributes);
+        return method_exists($modelClass,'factory') ? $modelClass::factory()->count($quantity)->create($attributes) : factory($modelClass, $quantity)->create($attributes);
     }
 
     public function callArtisan(Request $request)
