@@ -46,20 +46,7 @@ class CypressController
         $quantity = $request->input('quantity');
         $attributes = $request->input('attributes', []);
 
-        return $this->createModel($modelClass, $quantity, $attributes);
-    }
-
-    private function createModel($modelClass, $quantity = 1, $attributes = [])
-    {
-        if (method_exists($modelClass, 'factory')) {
-            return $modelClass::factory()->count($quantity)->create($attributes);
-        }
-
-        if (function_exists('factory')) {
-            return factory($modelClass, $quantity)->create($attributes);
-        }
-
-        throw new Exception("Unable to locate factory for {$modelClass}.");
+        return $this->createModelsUsingFactory($modelClass, $quantity, $attributes);
     }
 
     public function callArtisan(Request $request)
@@ -74,5 +61,18 @@ class CypressController
         $request->validate(['command' => 'required']);
 
         return Cypress::handleCommand($request->get('command'), $request->get('arguments', []));
+    }
+
+    private function createModelsUsingFactory($modelClass, $quantity = 1, $attributes = [])
+    {
+        if (method_exists($modelClass, 'factory')) {
+            return $modelClass::factory()->count($quantity)->create($attributes);
+        }
+
+        if (function_exists('factory')) {
+            return factory($modelClass, $quantity)->create($attributes);
+        }
+
+        throw new Exception("Unable to locate factory for {$modelClass}.");
     }
 }
