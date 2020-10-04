@@ -8,7 +8,7 @@ use Illuminate\Support\Str;
 
 class Cypress
 {
-    protected $modelsNamespace = 'App';
+    protected $modelsNamespace = null;
     protected $commands = [];
 
     public function setModelsNamespace(string $modelsNamespace)
@@ -16,12 +16,14 @@ class Cypress
         $this->modelsNamespace = $modelsNamespace;
     }
 
-    public function resolveModelClass(string $modelClass)
+    public function resolveModelClass(string $model)
     {
-        if (!Str::contains($modelClass, '\\'))
-            return $this->modelsNamespace . '\\' . Str::studly($modelClass);
+        if (Str::contains($model, '\\'))
+            return $model;
 
-        return $modelClass;
+        $modelsNamespace = static::$modelsNamespace ?? $this->guessModelsNamespace();
+
+        return $modelsNamespace . '\\' . Str::studly($model);
     }
 
     public function command(string $command, Closure $handler) {
@@ -34,5 +36,13 @@ class Cypress
         }
 
         return call_user_func_array($this->commands[$command], $args);
+    }
+
+    private function guessModelsNamespace() {
+        $rootNamespace = app()->getNamespace();
+
+        return is_dir(app_path('Models'))
+            ? $rootNamespace . 'Models'
+            : rtrim($rootNamespace, '\\/');
     }
 }
