@@ -55,6 +55,8 @@ class CypressController
         $request->validate(['command' => 'required']);
 
         Artisan::call($request->input('command'), $request->input('parameters', []));
+        
+        return response()->json(Artisan::output());
     }
 
     public function command(Request $request)
