@@ -55,8 +55,12 @@ class CypressController
         $request->validate(['command' => 'required']);
 
         Artisan::call($request->input('command'), $request->input('parameters', []));
-        
-        return response()->json(Artisan::output());
+
+        // Calling some artisan commands, like route:list, seems to mess something up the
+        // middlewares and this throws an error when Laravel terminates the request.
+        // In order to avoid that, we'll halt execution manually.
+        echo Artisan::output();
+        die;
     }
 
     public function command(Request $request)
